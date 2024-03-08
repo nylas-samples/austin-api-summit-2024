@@ -42,6 +42,7 @@ router.get("/nylas/callback", async (req, res) => {
       message: "OAuth2 flow completed successfully for grant ID: " + grantId,
     });
   } catch (error) {
+    console.error("Error exchanging code for token:", error);
     res.status(500).send("Failed to exchange authorization code for token");
   }
 });
