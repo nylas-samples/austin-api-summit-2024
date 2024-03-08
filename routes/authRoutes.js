@@ -1,8 +1,12 @@
 import express from "express";
+import { saveGrantId } from "../services/fileStorageService.js";
+
 const router = express.Router();
 
 // Route to initialize authentication
 router.get("/nylas", (req, res) => {
+  console.log("Received request to authenticate with Nylas. Redirecting...");
+
   const authUrl = req.nylas.auth.urlForOAuth2({
     clientId: req.nylasConfig.clientId,
     redirectUri: req.nylasConfig.callbackUri,
@@ -14,6 +18,7 @@ router.get("/nylas", (req, res) => {
 // TODO: redirect on success/fail
 router.get("/nylas/callback", async (req, res) => {
   console.log("Received callback from Nylas");
+
   const code = req.query.code;
 
   if (!code) {
@@ -34,16 +39,17 @@ router.get("/nylas/callback", async (req, res) => {
     );
     const { grantId } = response;
 
-    // NB: This stores in RAM
+    // NB: This stores in your file system. Don't do this in a real app!
     // In a real app you would store this in a database, associated with a user
-    process.env.USER_GRANT_ID = grantId;
+    await saveGrantId(1, grantId); // Save the grant ID for lookup later
+    req.nylasGrantId = grantId; // Add the grant ID to request object for use now
 
     res.json({
       message: "OAuth2 flow completed successfully for grant ID: " + grantId,
     });
   } catch (error) {
     console.error("Error exchanging code for token:", error);
-    res.status(500).send("Failed to exchange authorization code for token");
+    res.redirect("/auth/nylas");
   }
 });
 

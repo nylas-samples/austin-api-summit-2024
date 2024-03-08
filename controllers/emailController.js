@@ -5,9 +5,11 @@ import {
 import { getSummaryFromLLMAPI } from "../services/llmService.js";
 
 const sendEmail = async (req, res) => {
+  const { nylas, openAI, nylasGrantId } = req;
+
   try {
-    const sentMessage = await req.nylas.messages.send({
-      identifier: process.env.USER_GRANT_ID,
+    const sentMessage = await nylas.messages.send({
+      identifier: nylassGrantId,
       requestBody: {
         to: [{ name: "Name", email: process.env.EMAIL }],
         replyTo: [{ name: "Name", email: process.env.EMAIL }],
@@ -24,11 +26,12 @@ const sendEmail = async (req, res) => {
 };
 
 const summarizeMessages = async (req, res) => {
-  const { nylas, openAI } = req;
+  const { nylas, openAI, nylasGrantId } = req;
   const limit = Math.min(parseInt(req.query.limit) || 5, 50);
 
   try {
-    const emails = await fetchEmailsFromNylas(nylas, limit);
+    const emails = await fetchEmailsFromNylas(nylas, nylasGrantId, limit);
+
     if (!emails || emails.length === 0) {
       console.log("No messages found. Redirecting to login.");
       return res.redirect("/auth/nylas");
@@ -46,7 +49,7 @@ const summarizeMessages = async (req, res) => {
       })
     );
 
-    res.json(emailsWithSummaries);
+    return res.json(emailsWithSummaries);
   } catch (error) {
     console.error("Error processing user emails:", error);
     if (error.statusCode === 401) {
