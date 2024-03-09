@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import loggerMiddleware from "./middlewares/logger.js";
 import authRouter from "./routes/authRoutes.js";
 import emailRouter from "./routes/emailRoutes.js";
 import nylasMiddleware from "./middlewares/nylas.js";
@@ -13,6 +14,7 @@ app.listen(port, () => {
 });
 
 // Middleware
+app.use(loggerMiddleware);
 app.use(express.static("public"));
 app.use(nylasMiddleware);
 app.use(openAIMiddleware);
