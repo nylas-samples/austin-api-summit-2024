@@ -19,6 +19,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^3.1.0",
     "nylas": "^7.2.1",
+    "ollama": "^0.4.9",
     "openai": "^4.28.4",
     "string-strip-html": "^13.4.6"
   }

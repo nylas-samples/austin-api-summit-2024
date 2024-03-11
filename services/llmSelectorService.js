@@ -1,6 +1,6 @@
 import OpenAIService from "./openAIService.js";
 import HuggingFaceService from "./huggingFaceService.js";
-// import OllamaService from "./ollamaService.js";
+import OllamaService from "./ollamaService.js";
 
 function getLLMService(serviceName) {
   switch (serviceName) {

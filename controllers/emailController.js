@@ -40,7 +40,7 @@ const summarizeMessages = async (req, res) => {
     const emailsWithSummaries = await Promise.all(
       emails.map(async (email) => {
         const preppedEmail = prepareEmailForLLMAPI(email);
-        const llmService = getLLMService("HuggingFace");
+        const llmService = getLLMService("Ollama");
 
         const summary = await llmService.summarize(preppedEmail);
 
