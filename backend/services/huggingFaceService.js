@@ -23,7 +23,7 @@ class HuggingFaceService extends LLMService {
       summary = summary.slice(prompt.length).trim();
     }
 
-    return { ...response, generated_text: summary };
+    return summary;
   }
 }
 

@@ -45,9 +45,20 @@ const summarizeMessages = async (req, res) => {
 
         const summary = await llmService.summarize(preppedEmail);
 
-        return { originalEmail: email, preppedEmail, summary };
+        const summarizedEmail = {
+          id: email.id,
+          senderName: preppedEmail.formattedFrom,
+          senderInitials: preppedEmail.formattedFromInitials,
+          subject: preppedEmail.subject,
+          summary,
+          time: preppedEmail.formattedDate,
+        };
+
+        return summarizedEmail;
       })
     );
+
+    console.log(emailsWithSummaries);
 
     return res.json(emailsWithSummaries);
   } catch (error) {

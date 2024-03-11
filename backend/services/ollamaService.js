@@ -20,7 +20,7 @@ class OllamaService extends LLMService {
       ],
     });
 
-    return response;
+    return response.message.content;
   }
 }
 

@@ -22,7 +22,7 @@ class OpenAIService extends LLMService {
       ],
     });
 
-    return response;
+    return response.choices[0].message.content;
   }
 }
 
