@@ -5,7 +5,7 @@ import {
 import { getLLMService } from "../services/llmSelectorService.js";
 
 const sendEmail = async (req, res) => {
-  const { nylas, openAI, nylasGrantId } = req;
+  const { nylas, nylasGrantId } = req;
 
   try {
     const sentMessage = await nylas.messages.send({
@@ -26,8 +26,9 @@ const sendEmail = async (req, res) => {
 };
 
 const summarizeMessages = async (req, res) => {
-  const { nylas, openAI, hfInference, nylasGrantId } = req;
+  const { nylas, nylasGrantId } = req;
   const limit = Math.min(parseInt(req.query.limit) || 5, 50);
+  const llmServiceName = req.query.llmServiceName || "ollama";
 
   try {
     const emails = await fetchEmailsFromNylas(nylas, nylasGrantId, limit);
@@ -40,7 +41,7 @@ const summarizeMessages = async (req, res) => {
     const emailsWithSummaries = await Promise.all(
       emails.map(async (email) => {
         const preppedEmail = prepareEmailForLLMAPI(email);
-        const llmService = getLLMService("Ollama");
+        const llmService = getLLMService(llmServiceName);
 
         const summary = await llmService.summarize(preppedEmail);
 

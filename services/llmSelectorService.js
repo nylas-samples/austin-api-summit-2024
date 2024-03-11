@@ -3,12 +3,14 @@ import HuggingFaceService from "./huggingFaceService.js";
 import OllamaService from "./ollamaService.js";
 
 function getLLMService(serviceName) {
+  serviceName = serviceName.toLowerCase();
+
   switch (serviceName) {
-    case "OpenAI":
+    case "openai":
       return new OpenAIService();
-    case "HuggingFace":
+    case "huggingface":
       return new HuggingFaceService();
-    case "Ollama":
+    case "ollama":
       return new OllamaService();
     default:
       throw new Error("Unsupported LLM service");
