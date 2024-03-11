@@ -18,11 +18,18 @@ const fetchEmailsFromNylas = async (nylas, nylasGrantId, limit) => {
 
 const prepareEmailForLLMAPI = (email) => {
   console.log("Cleaning email message...");
+  const { date, body, subject } = email;
 
-  const { date, body } = email;
   const formattedDate = new Date(date).toLocaleDateString();
+  const formattedFrom = email.from
+    .map((contact) => `${contact.name} <${contact.email}>`)
+    .join(`, `);
+  const formattedTo = email.to
+    .map((contact) => `${contact.name} <${contact.email}>`)
+    .join(`, `);
   const cleanedBody = stripHtml(body).result;
-  return { formattedDate, cleanedBody };
+
+  return { formattedDate, formattedFrom, formattedTo, subject, cleanedBody };
 };
 
 export { fetchEmailsFromNylas, prepareEmailForLLMAPI };

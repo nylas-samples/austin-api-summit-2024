@@ -5,6 +5,7 @@ import authRouter from "./routes/authRoutes.js";
 import emailRouter from "./routes/emailRoutes.js";
 import nylasMiddleware from "./middlewares/nylas.js";
 import openAIMiddleware from "./middlewares/openAI.js";
+import hfInference from "./middlewares/huggingFace.js";
 
 // Start the server
 const app = express();
@@ -18,6 +19,7 @@ app.use(loggerMiddleware);
 app.use(express.static("public"));
 app.use(nylasMiddleware);
 app.use(openAIMiddleware);
+app.use(hfInference);
 
 // Routes
 app.use("/auth", authRouter);
