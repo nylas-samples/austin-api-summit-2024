@@ -26,7 +26,7 @@ export function EmailEntry({ selectedTool }: EmailEntryProps) {
       setIsLoading(true); // Start loading
       try {
         const response = await fetch(
-          "http://localhost:3000/email/recent-emails?limit=2&llmServiceName=openai"
+          `http://localhost:3000/email/recent-emails?limit=2&llmServiceName=${selectedTool}`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
