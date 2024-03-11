@@ -2,7 +2,7 @@ import {
   fetchEmailsFromNylas,
   prepareEmailForLLMAPI,
 } from "../services/emailService.js";
-import { getLLMService } from "../services/llmService.js";
+import { getLLMService } from "../services/llmSelectorService.js";
 
 const sendEmail = async (req, res) => {
   const { nylas, openAI, nylasGrantId } = req;
@@ -40,7 +40,7 @@ const summarizeMessages = async (req, res) => {
     const emailsWithSummaries = await Promise.all(
       emails.map(async (email) => {
         const preppedEmail = prepareEmailForLLMAPI(email);
-        const llmService = getLLMService("HuggingFace", hfInference);
+        const llmService = getLLMService("HuggingFace");
 
         const summary = await llmService.summarize(preppedEmail);
 

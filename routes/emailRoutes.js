@@ -13,11 +13,6 @@ router.use((req, res, next) => {
     return res.redirect("/auth/nylas");
   }
 
-  if (!req.openAI) {
-    console.error("OpenAI not initialized.");
-    return res.status(500).json({ message: "OpenAI not initialized" });
-  }
-
   next();
 });
 
