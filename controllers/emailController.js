@@ -9,7 +9,7 @@ const sendEmail = async (req, res) => {
 
   try {
     const sentMessage = await nylas.messages.send({
-      identifier: nylassGrantId,
+      identifier: nylasGrantId,
       requestBody: {
         to: [{ name: "Name", email: process.env.EMAIL }],
         replyTo: [{ name: "Name", email: process.env.EMAIL }],
