@@ -9,20 +9,31 @@ import {
   Select,
 } from "@/components/ui/select";
 
-export function Header() {
+interface HeaderProps {
+  onToolChange: (value: string) => void;
+  defaultTool: string;
+}
+
+export function Header({ onToolChange, defaultTool }: HeaderProps) {
+  const handleSelectionChange = (value: string) => {
+    onToolChange(value);
+  };
+
   return (
     <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
       <div className="text-lg font-bold">Email Summarizer</div>
       <div className="flex items-center gap-4">
         <div className="grid gap-0.5">
-          <Select>
+          <Select value={defaultTool} onValueChange={handleSelectionChange}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a tool" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ollama">Ollama</SelectItem>
-              <SelectItem value="summarify">Summarify</SelectItem>
-              <SelectItem value="synopsis">Synopsis</SelectItem>
+              <SelectItem value="openai">OpenAI | GPT 3.5 Turbo</SelectItem>
+              <SelectItem value="huggingface">
+                Hugging Face | Mistral
+              </SelectItem>
+              <SelectItem value="ollama">Ollama | Llama 2</SelectItem>
             </SelectContent>
           </Select>
         </div>
