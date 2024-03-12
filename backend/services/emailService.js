@@ -7,12 +7,12 @@ const fetchEmailsFromNylas = async (nylas, nylasGrantId, limit) => {
     const identifier = nylasGrantId;
     const messages = await nylas.messages.list({
       identifier,
-      queryParams: { limit },
+      queryParams: { limit, in: "inbox" },
     });
     return messages.data;
   } catch (error) {
     console.error("Error fetching emails:", error);
-    throw error; // Rethrow and let the controller handle it
+    throw error;
   }
 };
 

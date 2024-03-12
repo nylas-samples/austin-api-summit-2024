@@ -6,7 +6,7 @@ import { Footer } from "./ui/footer";
 import { EmailEntry } from "./email-entry";
 
 export function MainLayout() {
-  const [selectedTool, setSelectedTool] = useState("ollama");
+  const [selectedTool, setSelectedTool] = useState("openai");
 
   const handleToolChange = (tool: string) => {
     console.log("Selected tool:", tool);

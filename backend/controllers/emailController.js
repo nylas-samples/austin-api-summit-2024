@@ -28,7 +28,7 @@ const sendEmail = async (req, res) => {
 const summarizeMessages = async (req, res) => {
   const { nylas, nylasGrantId } = req;
   const limit = Math.min(parseInt(req.query.limit) || 5, 50);
-  const llmServiceName = req.query.llmServiceName || "ollama";
+  const llmServiceName = req.query.llmServiceName || "openai";
 
   try {
     const emails = await fetchEmailsFromNylas(nylas, nylasGrantId, limit);
