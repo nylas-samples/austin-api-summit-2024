@@ -1,5 +1,9 @@
 # Email Summarizer
 
+This project was built for a talk at Nordic APIs Austin API Summit 2024. It demonstrates how to use Nylas and LLMs (OpenAI, Hugging Face, and Ollama) to build an email summarizer.
+
+The deck for the talk can be found [here](https://forums.nylas.com/t/using-generative-ai-with-nylas-to-build-an-email-summarizer/135).
+
 ## System Overview
 
 ### Architecture
@@ -26,7 +30,7 @@
 1. Clone the repository
 
 ```bash
-git clone
+git clone git@github.com:nylas-samples/austin-api-summit-2024.git
 ```
 
 2. Setup server
@@ -74,7 +78,7 @@ npm run dev
 
 Serves on `http://localhost:3001`.
 
-## Resources
+## Resources for further learning
 
 - [Syntax FM: Local AI Models in JavaScript - Machine Learning Deep Dive with Xenova](https://syntax.fm/show/740/local-ai-models-in-javascript-machine-learning-deep-dive-with-xenova)  
   A podcast episode that delves into using local AI models with JavaScript, featuring a deep dive into machine learning with Xenova.
