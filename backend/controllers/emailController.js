@@ -58,8 +58,6 @@ const summarizeMessages = async (req, res) => {
       })
     );
 
-    console.log(emailsWithSummaries);
-
     return res.json(emailsWithSummaries);
   } catch (error) {
     console.error("Error processing user emails:", error);
