@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 import { Spinner } from "./ui/spinner";
@@ -18,8 +19,11 @@ export function EmailEntry({ selectedTool }: EmailEntryProps) {
     summary: string;
     time: string;
   };
+
   const [emails, setEmails] = React.useState<Email[]>([]);
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const router = useRouter();
 
   React.useEffect(() => {
     async function fetchEmails() {
@@ -35,15 +39,22 @@ export function EmailEntry({ selectedTool }: EmailEntryProps) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
+
+        if (data.redirect) {
+          router.push(data.redirect);
+          return;
+        }
+
         setEmails(data);
       } catch (error) {
         console.error("Failed to fetch emails:", error);
+      } finally {
+        setIsLoading(false); // Stop loading
       }
-      setIsLoading(false); // Stop loading
     }
 
     fetchEmails();
-  }, [selectedTool]);
+  }, [selectedTool, router]);
 
   return (
     <>

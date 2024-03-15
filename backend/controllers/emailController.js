@@ -34,8 +34,8 @@ const summarizeMessages = async (req, res) => {
     const emails = await fetchEmailsFromNylas(nylas, nylasGrantId, limit);
 
     if (!emails || emails.length === 0) {
-      console.log("No messages found. Redirecting to login.");
-      return res.redirect("/auth/nylas");
+      console.log("No messages found. Informing client to redirect.");
+      return res.status(200).json({ redirect: "/auth/nylas" });
     }
 
     const emailsWithSummaries = await Promise.all(

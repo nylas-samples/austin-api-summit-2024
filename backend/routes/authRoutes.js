@@ -12,7 +12,8 @@ router.get("/nylas", (req, res) => {
     redirectUri: req.nylasConfig.callbackUri,
   });
 
-  res.redirect(authUrl);
+  console.log("Ready to auth with Nylas. Informing client to redirect.");
+  return res.status(200).json({ redirect: authUrl });
 });
 
 // TODO: redirect on success/fail
@@ -44,9 +45,9 @@ router.get("/nylas/callback", async (req, res) => {
     await saveGrantId(1, grantId); // Save the grant ID for lookup later
     req.nylasGrantId = grantId; // Add the grant ID to request object for use now
 
-    res.json({
-      message: "OAuth2 flow completed successfully for grant ID: " + grantId,
-    });
+    console.log("OAuth2 flow completed successfully for grant ID: " + grantId);
+
+    return res.redirect("http://localhost:3001/");
   } catch (error) {
     console.error("Error exchanging code for token:", error);
     res.redirect("/auth/nylas");
