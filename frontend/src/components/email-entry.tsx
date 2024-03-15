@@ -64,8 +64,8 @@ export function EmailEntry({ selectedTool }: EmailEntryProps) {
         </div>
       ) : (
         emails.map((email) => (
-          <>
-            <div key={email.id} className="flex items-start gap-4 text-sm">
+          <div key={email.id}>
+            <div className="flex items-start gap-4 text-sm">
               <Avatar className="w-8 h-8">
                 <AvatarImage alt={email.senderName} />
                 <AvatarFallback>{email.senderInitials}</AvatarFallback>
@@ -80,7 +80,7 @@ export function EmailEntry({ selectedTool }: EmailEntryProps) {
               <div className="ml-auto text-xs">{email.time}</div>
             </div>
             <Separator className="h-px" />
-          </>
+          </div>
         ))
       )}
     </>
