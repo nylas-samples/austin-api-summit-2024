@@ -22,7 +22,3 @@ app.use(nylasMiddleware);
 // Routes
 app.use("/auth", authRouter);
 app.use("/email", emailRouter);
-
-app.get("/", async (req, res) => {
-  res.redirect("/auth/nylas");
-});

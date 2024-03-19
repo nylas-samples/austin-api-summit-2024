@@ -33,7 +33,7 @@ export function EmailEntry({ selectedTool }: EmailEntryProps) {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/email/recent-emails?limit=${limit}&llmServiceName=${selectedTool}`
+          `http://localhost:3000/email/vibify-emails?limit=${limit}&llmServiceName=${selectedTool}`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

@@ -1,8 +1,5 @@
 import express from "express";
-import {
-  sendEmail,
-  summarizeMessages,
-} from "../controllers/emailController.js";
+import { vibifyEmails } from "../controllers/emailController.js";
 import { getGrantId } from "../services/fileStorageService.js";
 
 const router = express.Router();
@@ -29,7 +26,6 @@ router.use(async (req, res, next) => {
   next();
 });
 
-router.get("/send-email", sendEmail);
-router.get("/recent-emails", summarizeMessages);
+router.get("/vibify-emails", vibifyEmails);
 
 export default router;

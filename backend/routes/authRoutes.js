@@ -1,11 +1,12 @@
 import express from "express";
 import { saveGrantId } from "../services/fileStorageService.js";
+import { getAppDomain } from "../services/domainService.js";
 
 const router = express.Router();
 
 // Route to initialize authentication
 router.get("/nylas", (req, res) => {
-  console.log("Received request to authenticate with Nylas. Redirecting...");
+  console.log("Received request to authenticate with Nylas.");
 
   const authUrl = req.nylas.auth.urlForOAuth2({
     clientId: req.nylasConfig.clientId,
@@ -13,16 +14,16 @@ router.get("/nylas", (req, res) => {
   });
 
   console.log("Ready to auth with Nylas. Informing client to redirect.");
-  return res.status(200).json({ redirect: authUrl });
+  res.status(200).json({ redirect: authUrl });
 });
 
-// TODO: redirect on success/fail
 router.get("/nylas/callback", async (req, res) => {
   console.log("Received callback from Nylas");
 
   const code = req.query.code;
 
   if (!code) {
+    // TODO: Send redirect object to client to redirect to home page
     res.status(400).send("No authorization code returned from Nylas");
     return;
   }
@@ -47,10 +48,12 @@ router.get("/nylas/callback", async (req, res) => {
 
     console.log("OAuth2 flow completed successfully for grant ID: " + grantId);
 
-    return res.redirect("http://localhost:3001/");
+    const appDomain = await getAppDomain(res);
+    console.log("Redirecting to app domain: " + appDomain);
+    res.redirect(appDomain);
   } catch (error) {
     console.error("Error exchanging code for token:", error);
-    res.redirect("/auth/nylas");
+    res.status(200).json({ redirect: "/" });
   }
 });
 
