@@ -1,4 +1,3 @@
-import { log } from "console";
 import { promises as fs } from "fs";
 import path from "path";
 
