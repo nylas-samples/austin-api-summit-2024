@@ -24,6 +24,7 @@
     "nylas": "^7.2.1",
     "ollama": "^0.4.9",
     "openai": "^4.28.4",
-    "string-strip-html": "^13.4.6"
+    "string-strip-html": "^13.4.6",
+    "winston": "^3.12.0"
   }
 }

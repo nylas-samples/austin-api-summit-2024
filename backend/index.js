@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import helmetMiddleware from "./middlewares/helmet.js";
 import corsMiddleware from "./middlewares/cors.js";
-import loggerMiddleware from "./middlewares/logger.js";
+import requestLoggerMiddleware from "./middlewares/requestLogger.js";
 import nylasMiddleware from "./middlewares/nylas.js";
 import sessionMiddleware from "./middlewares/sessions.js";
 import authRouter from "./routes/authRoutes.js";
@@ -18,7 +18,7 @@ app.listen(port, () => {
 // Middleware
 app.use(helmetMiddleware);
 app.use(corsMiddleware);
-app.use(loggerMiddleware);
+app.use(requestLoggerMiddleware);
 app.use(sessionMiddleware);
 app.use(express.static("public"));
 app.use(nylasMiddleware);

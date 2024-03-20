@@ -1,6 +1,7 @@
 import express from "express";
 import { getCookieName } from "../middlewares/sessions.js";
 import { getAppDomain } from "../services/domainService.js";
+import logger from "../services/loggerService.js";
 
 const router = express.Router();
 
@@ -8,19 +9,19 @@ const router = express.Router();
 
 // Route to initialize authentication
 router.get("/nylas", (req, res) => {
-  console.log("Received request to authenticate with Nylas.");
+  logger.info("Received request to authenticate with Nylas.");
 
   const authUrl = req.nylas.auth.urlForOAuth2({
     clientId: req.nylasConfig.clientId,
     redirectUri: req.nylasConfig.callbackUri,
   });
 
-  console.log("Ready to auth with Nylas. Informing client to redirect.");
+  logger.info("Ready to auth with Nylas. Informing client to redirect.");
   res.status(200).json({ redirect: authUrl });
 });
 
 router.get("/nylas/callback", async (req, res) => {
-  console.log("Received callback from Nylas");
+  logger.info("Received callback from Nylas");
 
   const code = req.query.code;
 
@@ -42,15 +43,15 @@ router.get("/nylas/callback", async (req, res) => {
       codeExchangePayload
     );
     const { grantId } = response;
-    console.log("OAuth2 flow completed successfully for grant ID: " + grantId);
+    logger.info("OAuth2 flow completed successfully for grant ID: " + grantId);
 
     req.session.nylasGrantId = grantId;
 
     const appDomain = getAppDomain(res);
-    console.log("Redirecting to app domain: " + appDomain);
+    logger.info("Redirecting to app domain: " + appDomain);
     res.redirect(appDomain);
   } catch (error) {
-    console.error("Error exchanging code for token:", error);
+    logger.error("Error exchanging code for token:", error);
     res.status(200).json({ redirect: "/" });
   }
 });
@@ -65,7 +66,7 @@ router.get("/nylas/logout", (req, res) => {
     }
 
     res.clearCookie(cookieName, { path: "/" });
-    console.log(cookieName + " cookie cleared.");
+    logger.info(cookieName + " cookie cleared.");
 
     res.send("Logged out successfully.");
   });
