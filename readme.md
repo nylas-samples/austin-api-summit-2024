@@ -1,14 +1,28 @@
-# Email Summarizer
+# Vibebox
 
-This project was built for a talk at Nordic APIs Austin API Summit 2024. It demonstrates how to use Nylas and LLMs (OpenAI, Hugging Face, and Ollama) to build an email summarizer.
-
-The deck for the talk can be found [here](https://forums.nylas.com/t/using-generative-ai-with-nylas-to-build-an-email-summarizer/135).
+Your inbox + vibes.
 
 ## System Overview
 
 ### Architecture
 
-![](/images/architecture.png)
+![Architecture](/images/architecture.png)
+
+#### Backend stack
+
+- Node.js
+- Express
+- TBD KV store (via express-session compatible API)
+
+#### Frontend stack
+
+- Next.js
+- React
+- Tailwind CSS
+
+### User flow
+
+![User flow](/images/user-flow.png)
 
 ### Client UI
 
@@ -46,11 +60,17 @@ Write the following environment variables to a `.env` file in the `backend` dire
 
 ```bash
 # .env
+NODE_ENV=dev
+CORS_ORIGIN=http://localhost:3001
+APP_DOMAIN_DEV=http://localhost:3001
+APP_DOMAIN_PROD= # Not needed for local development
+APP_NAME=Vibebox
 NYLAS_CLIENT_ID= # Get from dashboard-v3.nylas.com
 NYLAS_API_KEY= # Get from dashboard-v3.nylas.com
 NYLAS_API_URI=https://api.us.nylas.com
 OPENAI_API_KEY= # Get from OpenAI
 HUGGINGFACE_API_KEY= # Get from Hugging Face
+EXPRESS_SESSION_SECRET=
 ```
 
 Start the server:
