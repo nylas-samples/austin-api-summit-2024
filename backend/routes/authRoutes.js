@@ -1,7 +1,10 @@
 import express from "express";
+import { getCookieName } from "../middlewares/sessions.js";
 import { getAppDomain } from "../services/domainService.js";
 
 const router = express.Router();
+
+// TODO: Move controller logic to separate file
 
 // Route to initialize authentication
 router.get("/nylas", (req, res) => {
@@ -50,6 +53,22 @@ router.get("/nylas/callback", async (req, res) => {
     console.error("Error exchanging code for token:", error);
     res.status(200).json({ redirect: "/" });
   }
+});
+
+router.get("/nylas/logout", (req, res) => {
+  const cookieName = getCookieName();
+
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      return res.status(500).send("Could not log out.");
+    }
+
+    res.clearCookie(cookieName, { path: "/" });
+    console.log(cookieName + " cookie cleared.");
+
+    res.send("Logged out successfully.");
+  });
 });
 
 export default router;

@@ -1,5 +1,9 @@
 import session from "express-session";
 
+export const getCookieName = () => {
+  return process.env.APP_NAME.toLowerCase() + ".sid";
+}
+
 function createSessionMiddleware() {
   const sessionConfig = {
     secret: process.env.EXPRESS_SESSION_SECRET,
@@ -12,6 +16,7 @@ function createSessionMiddleware() {
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
       domain: process.env.NODE_ENV === "dev" ? "localhost" : undefined,
     },
+    name: getCookieName(),
   };
 
   return session(sessionConfig);

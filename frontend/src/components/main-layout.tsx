@@ -9,7 +9,7 @@ export function MainLayout() {
   const [selectedTool, setSelectedTool] = useState("openai");
 
   const handleToolChange = (tool: string) => {
-    console.log("Selected tool:", tool);
+    console.log(">>>>>>>>>>>>>>>>Selected tool:", tool);
 
     setSelectedTool(tool);
   };
