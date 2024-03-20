@@ -5,7 +5,12 @@ import {
 import { getLLMService } from "../services/llmSelectorService.js";
 
 const vibifyEmails = async (req, res) => {
-  const { nylas, nylasGrantId } = req;
+  const {
+    nylas,
+    session: { nylasGrantId },
+  } = req;
+
+  console.log("Nylas grant ID:", nylasGrantId);
   const limit = Math.min(parseInt(req.query.limit) || 5, 50);
   const llmServiceName = req.query.llmServiceName || "openai";
 

@@ -20,12 +20,13 @@ const accessLogStream = fs.createWriteStream(path.join(dataDir, "access.log"), {
 // Setup the logger to log in 'combined' format to the file
 const fileLogger = morgan("combined", { stream: accessLogStream });
 
-// Setup the logger to log in 'dev' format to the console
-const consoleLogger = morgan("dev");
-
 const loggerMiddleware = (req, res, next) => {
+  // Custom synchronous logging for console
+  const log = `${req.method} ${req.url}`;
+  console.log(log);
+
   fileLogger(req, res, () => {}); // Log to file, do not wait to complete
-  consoleLogger(req, res, next); // Log to console and proceed with request
+  next();
 };
 
 export default loggerMiddleware;

@@ -1,5 +1,4 @@
 import express from "express";
-import { saveGrantId } from "../services/fileStorageService.js";
 import { getAppDomain } from "../services/domainService.js";
 
 const router = express.Router();
@@ -40,15 +39,11 @@ router.get("/nylas/callback", async (req, res) => {
       codeExchangePayload
     );
     const { grantId } = response;
-
-    // NB: This stores in your file system. Don't do this in a real app!
-    // In a real app you would store this in a database, associated with a user
-    await saveGrantId(1, grantId); // Save the grant ID for lookup later
-    req.nylasGrantId = grantId; // Add the grant ID to request object for use now
-
     console.log("OAuth2 flow completed successfully for grant ID: " + grantId);
 
-    const appDomain = await getAppDomain(res);
+    req.session.nylasGrantId = grantId;
+
+    const appDomain = getAppDomain(res);
     console.log("Redirecting to app domain: " + appDomain);
     res.redirect(appDomain);
   } catch (error) {
