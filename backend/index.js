@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import helmetMiddleware from "./middlewares/helmet.js";
 import corsMiddleware from "./middlewares/cors.js";
 import loggerMiddleware from "./middlewares/logger.js";
 import nylasMiddleware from "./middlewares/nylas.js";
@@ -15,6 +16,7 @@ app.listen(port, () => {
 });
 
 // Middleware
+app.use(helmetMiddleware);
 app.use(corsMiddleware);
 app.use(loggerMiddleware);
 app.use(sessionMiddleware);
