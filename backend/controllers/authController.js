@@ -54,7 +54,7 @@ export const logoutFromNylas = (req, res) => {
 
   req.session.destroy((err) => {
     if (err) {
-      console.error("Error destroying session:", err);
+      logger.error("Error destroying session:", err);
       return res.status(500).send("Could not log out.");
     }
 

@@ -1,7 +1,8 @@
 import { stripHtml } from "string-strip-html";
+import logger from "./loggerService.js";
 
 const fetchEmailsFromNylas = async (nylas, nylasGrantId, limit) => {
-  console.log("Fetching emails...");
+  logger.info("Fetching emails...");
 
   try {
     const identifier = nylasGrantId;
@@ -11,7 +12,7 @@ const fetchEmailsFromNylas = async (nylas, nylasGrantId, limit) => {
     });
     return messages.data;
   } catch (error) {
-    console.error("Error fetching emails:", error);
+    logger.error("Error fetching emails:", error);
     throw error;
   }
 };
@@ -32,7 +33,7 @@ const getInitials = (name, email) => {
 };
 
 const prepareEmailForLLMAPI = (email) => {
-  console.log("Cleaning email message...");
+  logger.info("Cleaning email message...");
   const { date, body, subject, from, to } = email;
 
   const formattedDate = new Date(date * 1000).toLocaleDateString();

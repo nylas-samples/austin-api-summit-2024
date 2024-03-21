@@ -2,6 +2,7 @@ import session from "express-session";
 import RedisStore from "connect-redis";
 import connectToRedis from "../services/redisService.js";
 import { getCookieName } from "../services/cookieService.js";
+import logger from "../services/loggerService.js";
 
 const redisClient = await connectToRedis();
 
@@ -33,10 +34,10 @@ const sessionMiddleware = createSessionMiddleware();
 
 export const isAuthenticated = (req, res, next) => {
   if (req.session && req.session.nylasGrantId) {
-    console.log("User is authenticated.");
+    logger.info("User is authenticated.");
     next();
   } else {
-    console.error("User is not authenticated. Redirecting to login.");
+    logger.error("User is not authenticated. Redirecting to login.");
     return res.redirect("/auth/nylas");
   }
 };

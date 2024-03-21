@@ -3,6 +3,7 @@ import {
   prepareEmailForLLMAPI,
 } from "../services/emailService.js";
 import { getLLMService } from "../services/llmSelectorService.js";
+import logger from "../services/loggerService.js";
 
 export const vibifyEmails = async (req, res) => {
   const {
@@ -10,7 +11,7 @@ export const vibifyEmails = async (req, res) => {
     session: { nylasGrantId },
   } = req;
 
-  console.log("Nylas grant ID:", nylasGrantId);
+  logger.info("Nylas grant ID:", nylasGrantId);
   const limit = Math.min(parseInt(req.query.limit) || 5, 50);
   const llmServiceName = req.query.llmServiceName || "openai";
 
@@ -18,7 +19,7 @@ export const vibifyEmails = async (req, res) => {
     const emails = await fetchEmailsFromNylas(nylas, nylasGrantId, limit);
 
     if (!emails || emails.length === 0) {
-      console.log("No messages found. Informing client to redirect.");
+      logger.info("No messages found. Informing client to redirect.");
       return res.status(200).json({ redirect: "/auth/nylas" });
     }
 
@@ -44,9 +45,9 @@ export const vibifyEmails = async (req, res) => {
 
     return res.json(emailsWithSummaries);
   } catch (error) {
-    console.error("Error processing user emails:", error);
+    logger.error("Error processing user emails:", error);
     if (error.statusCode === 401) {
-      console.log("Redirecting to login.");
+      logger.info("Redirecting to login.");
       return res.redirect("/auth/nylas");
     }
 

@@ -7,12 +7,13 @@ import nylasMiddleware from "./middlewares/nylas.js";
 import sessionMiddleware from "./middlewares/sessions.js";
 import authRouter from "./routes/authRoutes.js";
 import emailRouter from "./routes/emailRoutes.js";
+import logger from "./services/loggerService.js";
 
 // Start the server
 const app = express();
 const port = 3000;
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  logger.info(`Server is running on port ${port}`);
 });
 
 // Middleware
