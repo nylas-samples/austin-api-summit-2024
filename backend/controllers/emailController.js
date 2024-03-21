@@ -4,7 +4,7 @@ import {
 } from "../services/emailService.js";
 import { getLLMService } from "../services/llmSelectorService.js";
 
-const vibifyEmails = async (req, res) => {
+export const vibifyEmails = async (req, res) => {
   const {
     nylas,
     session: { nylasGrantId },
@@ -53,5 +53,3 @@ const vibifyEmails = async (req, res) => {
     return res.status(500).json({ message: "Error processing user emails" });
   }
 };
-
-export { vibifyEmails };
