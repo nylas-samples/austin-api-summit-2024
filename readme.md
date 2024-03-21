@@ -44,7 +44,7 @@ Your inbox + vibes.
 1. Clone the repository
 
 ```bash
-git clone git@github.com:nylas-samples/austin-api-summit-2024.git
+git clone git@github.com:nylas-samples/vibebox.git
 ```
 
 2. Setup server
