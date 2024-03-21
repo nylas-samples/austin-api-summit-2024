@@ -1,5 +1,5 @@
 import express from "express";
-import { getCookieName } from "../middlewares/sessions.js";
+import { getCookieName } from "../services/cookieService.js";
 import { getAppDomain } from "../services/domainService.js";
 import logger from "../services/loggerService.js";
 

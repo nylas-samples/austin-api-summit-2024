@@ -1,11 +1,18 @@
 import session from "express-session";
+import RedisStore from "connect-redis";
+import connectToRedis from "../services/redisService.js";
+import { getCookieName } from "../services/cookieService.js";
 
-export const getCookieName = () => {
-  return process.env.APP_NAME.toLowerCase() + ".sid";
-}
+const redisClient = await connectToRedis();
 
 function createSessionMiddleware() {
+  const redisStore = new RedisStore({
+    client: redisClient,
+    prefix: "session:",
+  });
+
   const sessionConfig = {
+    store: redisStore,
     secret: process.env.EXPRESS_SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
