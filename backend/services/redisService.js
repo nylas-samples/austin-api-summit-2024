@@ -17,13 +17,17 @@ async function connectToRedis() {
   redisClient.on("error", (error) => {
     logger.error("Redis error:", error);
 
-    // Wait for a specified delay and then try to reconnect
-    setTimeout(() => {
-      logger.info(`Attempting to reconnect to Redis...`);
-      redisClient.connect().catch((err) => {
-        logger.error("Redis reconnection attempt failed:", err);
-      });
-    }, reconnectDelay);
+    // Only attempt to reconnect if the client is not already connecting or connected
+    if (redisClient.isOpen === false) {
+      setTimeout(() => {
+        // Wait for a specified delay and then try to reconnect
+        logger.info(`Attempting to reconnect to Redis...`);
+        redisClient.connect().catch((err) => {
+          logger.error("Redis reconnection attempt failed:", err);
+          // If reconnection fails, the error event will be triggered again
+        });
+      }, reconnectDelay);
+    }
   });
 
   try {
