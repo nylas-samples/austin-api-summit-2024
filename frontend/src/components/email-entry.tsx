@@ -32,12 +32,18 @@ export function EmailEntry({ selectedTool }: EmailEntryProps) {
       const limit = selectedTool === "ollama" ? 2 : 6;
 
       try {
-        const response = await fetch(
-          `http://localhost:3000/email/recent-emails?limit=${limit}&llmServiceName=${selectedTool}`
-        );
+        console.log("Fetching emails");
+
+        const url = `http://localhost:3000/email/vibify-emails?limit=${limit}&llmServiceName=${selectedTool}`;
+
+        const response = await fetch(url, {
+          credentials: "include",
+        });
+
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
         const data = await response.json();
 
         if (data.redirect) {

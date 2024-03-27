@@ -3,30 +3,15 @@ import {
   prepareEmailForLLMAPI,
 } from "../services/emailService.js";
 import { getLLMService } from "../services/llmSelectorService.js";
+import logger from "../services/loggerService.js";
 
-const sendEmail = async (req, res) => {
-  const { nylas, nylasGrantId } = req;
+export const vibifyEmails = async (req, res) => {
+  const {
+    nylas,
+    session: { nylasGrantId },
+  } = req;
 
-  try {
-    const sentMessage = await nylas.messages.send({
-      identifier: nylasGrantId,
-      requestBody: {
-        to: [{ name: "Name", email: process.env.EMAIL }],
-        replyTo: [{ name: "Name", email: process.env.EMAIL }],
-        subject: "Your Subject Here",
-        body: "Your email body here.",
-      },
-    });
-
-    res.json(sentMessage);
-  } catch (error) {
-    console.error("Error sending email:", error);
-    res.status(500).json({ message: "Failed to send email" });
-  }
-};
-
-const summarizeMessages = async (req, res) => {
-  const { nylas, nylasGrantId } = req;
+  logger.info("Nylas grant ID:", nylasGrantId);
   const limit = Math.min(parseInt(req.query.limit) || 5, 50);
   const llmServiceName = req.query.llmServiceName || "openai";
 
@@ -34,7 +19,7 @@ const summarizeMessages = async (req, res) => {
     const emails = await fetchEmailsFromNylas(nylas, nylasGrantId, limit);
 
     if (!emails || emails.length === 0) {
-      console.log("No messages found. Informing client to redirect.");
+      logger.info("No messages found. Informing client to redirect.");
       return res.status(200).json({ redirect: "/auth/nylas" });
     }
 
@@ -60,14 +45,12 @@ const summarizeMessages = async (req, res) => {
 
     return res.json(emailsWithSummaries);
   } catch (error) {
-    console.error("Error processing user emails:", error);
+    logger.error("Error processing user emails:", error);
     if (error.statusCode === 401) {
-      console.log("Redirecting to login.");
+      logger.info("Redirecting to login.");
       return res.redirect("/auth/nylas");
     }
 
     return res.status(500).json({ message: "Error processing user emails" });
   }
 };
-
-export { sendEmail, summarizeMessages };
