@@ -8,7 +8,7 @@ const fetchEmailsFromNylas = async (nylas, nylasGrantId, limit) => {
     const identifier = nylasGrantId;
     const messages = await nylas.messages.list({
       identifier,
-      queryParams: { limit, in: "inbox" },
+      queryParams: { limit, in: "INBOX" },
     });
     return messages.data;
   } catch (error) {
